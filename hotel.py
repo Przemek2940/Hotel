@@ -11,6 +11,7 @@ pokoj2 = 48
 pokoj1 = 60
 pranie = 7
 
+
 if decyzja == "1":
     imie = input("Podaj imię i nazwisko: ")
     firma = input("Jaka firma?")
