@@ -13,8 +13,6 @@ pokoj1 = 60
 pranie = 7
 
 
-
-
 if decyzja == "1":
     imie = input("Podaj imię i nazwisko: ")
     paszport = input("Podaj numer paszportu: ")
@@ -23,10 +21,10 @@ if decyzja == "1":
     ileos = input("Iluosobowy pokój?")
     pokoj = input("Numer pokoju: ")
     czas = int(input("Ile dni?"))
-    data = str(date.today())
-    datawymeldowania = data + datetime.timedelta(days=czas)
+    data = date.today()
+    datawymeldowania = str(data + datetime.timedelta(days=czas))
     dane = ['Imię i nazwisko: ', imie, 'Numer paszportu: ', paszport, 'Data urodzenia: ', dataur, 'Firma: ',
-            firma,'Numer pokoju: ', pokoj, 'Data zameldowania: ', data, 'Zostaje do: ', datawymeldowania, '\n']
+            firma,'Numer pokoju: ', pokoj, 'Data zameldowania: ', str(data), 'Zostaje do: ', datawymeldowania, '\n']
     with open('meldunki.txt', 'a') as f:
         for linia in dane:
             f.write(linia + '\n')
