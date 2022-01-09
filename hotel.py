@@ -3,22 +3,11 @@
 
 from datetime import date
 import datetime
-
-def amount():
-    if beds == "4":
-        price = time * beds4
-    elif beds == "3":
-        price = time * beds3
-    elif beds == "2":
-        price = time * beds2
-    elif beds == "1":
-        price = time * beds1
-    return price
-
+import json
 
 def main(args):                                                        #program screen
     if decision == "1":
-        print(name, "musi zapłacić", amount(), "złotych za meldunek.")
+        print(name, "musi zapłacić", amount, "złotych za meldunek.")
     elif decision == "2":
         if hmany == 1:
             print(name, "zostawił", hmany, "bagaż, dnia:", date)
@@ -42,10 +31,6 @@ def main(args):                                                        #program 
 
 decision = input("""Jeśli chcesz kogoś zameldować: wybierz 1.\nJeśli chcesz dodać bagaż: wybierz 2
 Jeśli chcesz rozliczyć pralnię: wybierz 3\nJeśli chcesz rozliczyć postój samochodu: wybierz 4\n""")
-beds4 = 35
-beds3 = 42
-beds2 = 48
-beds1 = 60
 washing = 7
 date = date.today()
 
@@ -55,12 +40,19 @@ if decision == "1":
     birth = input("Podaj datę urodzenia: ")
     company = input("Jaka firma?")
     beds = input("Iluosobowy pokój?")
+    price = int(input("Jaka jest cena za pokój?"))
+    obj = dict()                                                    #json
+    obj[beds] = price
+    plik = open('rooms.json', encoding='utf-8', mode="w")
+    json.dump(obj, plik)
+    plik.close()
     room = input("Numer pokoju: ")
     time = int(input("Ile dni?"))
+    amount = price * time
     checkout = str(date + datetime.timedelta(days=time))        #date of checking into + days from time
     checkinto = ['Imię i nazwisko: ' + name, 'Numer paszportu: ' + passport, 'Data urodzenia: ' + birth, 'Firma: ' +
             company, 'Numer pokoju: ' + room, 'Data zameldowania: ' + str(date), 'Zostaje do: ' + checkout,
-            'Kwota: ' + str(amount()) + 'zł', '\n']
+            'Kwota: ' + str(amount) + 'zł', '\n']
     with open('meldunki.txt', 'a') as f:
         for linia in checkinto:
             f.write(linia + '\n')                                       #saving to meldunki.txt
