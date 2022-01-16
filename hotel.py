@@ -28,34 +28,37 @@ def main(args):                                                        #program 
     else:
         print("Błąd")
 
-def roomdata():
-    cur.execute(
-        """
-        SELECT beds, price from room
-         """)
-    data = cur.fetchall()
-    for beds in data:
-        print(beds['beds'], "osobowy:",beds['price'], "zł")
-    print()
 
-con = sqlite3.connect('pokoje.db')
-con.row_factory = sqlite3.Row
-cur = con.cursor()
+def roomdata():                                                   #prints available rooms
+    con = sqlite3.connect('pokoje.db')
+    cur = con.cursor()
+    cur.execute("SELECT * FROM room")
+    results = cur.fetchall()
+    for row in results:
+        print("\nDostępne pokoje:")
+        print(row[0], "osobowy pokój")
+        print("Cena: ", row[1], "\n")
 
-cur.execute("DROP TABLE IF EXISTS room;")
 
-cur.execute("""
-    CREATE TABLE IF NOT EXISTS room (
-        beds INTEGER PRIMARY KEY ASC,
-        price varchar(250) DEFAULT ''
-    )""")
+def roomcreator():
+    con = sqlite3.connect('pokoje.db')
+    con.row_factory = sqlite3.Row
+    cur = con.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS room (
+            beds INTEGER PRIMARY KEY ASC,
+            price varchar(250) DEFAULT ''
+        )""")
 
-data = (
-    ('4', '35'),
-    ('3', '42')
-)
-cur.executemany('INSERT INTO room VALUES(?, ?)', data)
-con.commit()
+    nbeds = input("Iluosobowy pokój chcesz stworzyć? ")
+    nprice = input("Jaka będzie cena za osobę? ")
+
+    cur.execute("""
+    INSERT OR IGNORE INTO room (beds, price)
+    VALUES (?,?)
+    """, (nbeds, nprice))
+    con.commit()
+
 
 decision = input("""Jeśli chcesz kogoś zameldować: wybierz 1.\nJeśli chcesz dodać bagaż: wybierz 2
 Jeśli chcesz rozliczyć pralnię: wybierz 3\nJeśli chcesz rozliczyć postój samochodu: wybierz 4\n""")
@@ -66,13 +69,12 @@ if decision == "1":
     name = input("Podaj imię i nazwisko: ")
     passport = input("Podaj numer paszportu: ")
     birth = input("Podaj datę urodzenia: ")
-    company = input("Jaka firma?")
-    print("Dostępne pokoje: "), roomdata()
-    beds = input("Iluosobowy pokój?")
-    price = int(input("Jaka jest cena za pokój?"))
+    company = input("Jaka firma? ")
+    roomdata()
+    roomcreator()
     room = input("Numer pokoju: ")
     time = int(input("Ile dni?"))
-    amount = price * time
+    amount = price * time                                       #have to change variables, doesnt work
     checkout = str(date + datetime.timedelta(days=time))        #date of checking into + days from time
     checkinto = ['Imię i nazwisko: ' + name, 'Numer paszportu: ' + passport, 'Data urodzenia: ' + birth, 'Firma: ' +
             company, 'Numer pokoju: ' + room, 'Data zameldowania: ' + str(date), 'Zostaje do: ' + checkout,
