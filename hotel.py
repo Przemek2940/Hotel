@@ -1,4 +1,4 @@
-#! /home/przemek2940/Python/bin python3
+#! /home/przemek2940/PycharmProjects/venv00/bin python3
 # -*- coding: utf-8 -*-
 
 from datetime import date
@@ -7,8 +7,8 @@ import sqlite3
 
 def main(args):                                                        #program screen
     if decision == "1":
-        print(name, "musi zapłacić", amount, "złotych za meldunek.")
-    elif decision == "2":
+        print(name, "musi zapłacić", "tu powinna być funkcja " "złotych za meldunek.")
+    if decision == "2":
         if hmany == 1:
             print(name, "zostawił", hmany, "bagaż, dnia:", date)
         elif hmany > 1 and hmany < 5:
@@ -59,6 +59,33 @@ def roomcreator():
     """, (nbeds, nprice))
     con.commit()
 
+def roomchecking():                                     # searching for room in database
+    con = sqlite3.connect('pokoje.db')
+    con.row_factory = sqlite3.Row
+    cur = con.cursor()
+    if whichroom == 0:                                  # if room is not in database - roomcreator
+        roomcreator()
+    else:
+        cur.execute(f"SELECT * from room WHERE beds='{whichroom}'")
+        if cur.fetchall():
+            return whichroom
+        else:
+            creatordecision = input("Nie ma takiego pokoju. Chcesz go stworzyć? (t/n)") #posibility to create a room
+            if creatordecision == 't':
+                roomcreator()
+                roomdata()
+                roomchecking()
+
+
+def amount():
+    con = sqlite3.connect('pokoje.db')
+    con.row_factory = sqlite3.Row
+    cur = con.cursor()
+    cur.execute(f"SELECT price, beds FROM room WHERE beds = {whichroom}")
+    results = cur.fetchall()
+    for row in results:
+        print(int(row[0]) * time)
+
 
 decision = input("""Jeśli chcesz kogoś zameldować: wybierz 1.\nJeśli chcesz dodać bagaż: wybierz 2
 Jeśli chcesz rozliczyć pralnię: wybierz 3\nJeśli chcesz rozliczyć postój samochodu: wybierz 4\n""")
@@ -71,10 +98,11 @@ if decision == "1":
     birth = input("Podaj datę urodzenia: ")
     company = input("Jaka firma? ")
     roomdata()
-    roomcreator()
+    whichroom = int(input("Który pokój wybrać? Jeśli chcesz stworzyć nowy pokój wyślij: 0 "))
+    roomchecking()
     room = input("Numer pokoju: ")
     time = int(input("Ile dni?"))
-    amount = price * time                                       #have to change variables, doesnt work
+    amount()
     checkout = str(date + datetime.timedelta(days=time))        #date of checking into + days from time
     checkinto = ['Imię i nazwisko: ' + name, 'Numer paszportu: ' + passport, 'Data urodzenia: ' + birth, 'Firma: ' +
             company, 'Numer pokoju: ' + room, 'Data zameldowania: ' + str(date), 'Zostaje do: ' + checkout,
