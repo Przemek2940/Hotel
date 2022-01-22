@@ -75,6 +75,8 @@ def roomchecking():                                     # searching for room in 
                 roomcreator()
                 roomdata()
                 roomchecking()
+            else:
+                print("Błąd")
 
 
 def amount():
