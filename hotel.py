@@ -59,13 +59,21 @@ def roomcreator():
     """, (nbeds, nprice))
     con.commit()
 
+
+def roomdelete():
+    con = sqlite3.connect('pokoje.db')
+    con.row_factory = sqlite3.Row
+    cur = con.cursor()
+    cur.execute(f"DELETE from room WHERE beds = '{roomtodelete}'")
+    con.commit()
+    exit()
+
+
 def roomchecking():                                     # searching for room in database
     con = sqlite3.connect('pokoje.db')
     con.row_factory = sqlite3.Row
     cur = con.cursor()
-    if whichroom == 0:                                  # if room is not in database - roomcreator
-        roomcreator()
-    else:
+    if whichroom > 0:
         cur.execute(f"SELECT * from room WHERE beds='{whichroom}'")
         if cur.fetchall():
             return whichroom
@@ -77,20 +85,35 @@ def roomchecking():                                     # searching for room in 
                 roomchecking()
             else:
                 print("Błąd")
-
+    elif whichroom == 0:                                            # what to dooooooo
+        roomcreator()
+        roomdata()
+        cur.execute(f"SELECT * from room WHERE beds='{whichroom2}'")
+        if cur.fetchall():
+            return whichroom2
+        else:
+            print("Błąd")
 
 def amount():
     con = sqlite3.connect('pokoje.db')
     con.row_factory = sqlite3.Row
     cur = con.cursor()
-    cur.execute(f"SELECT price, beds FROM room WHERE beds = {whichroom}")
-    results = cur.fetchall()
-    for row in results:
-        print(int(row[0]) * time)
+    if whichroom > 0:
+        cur.execute(f"SELECT price, beds FROM room WHERE beds = {whichroom}")
+        results = cur.fetchall()
+        for row in results:
+            print(int(row[0]) * time)
+    elif whichroom == 0:                                                # whichroom2 here too
+        cur.execute(f"SELECT price, beds FROM room WHERE beds = {whichroom2}")
+        results = cur.fetchall()
+        for row in results:
+            print(int(row[0]) * time)
+
 
 
 decision = input("""Jeśli chcesz kogoś zameldować: wybierz 1.\nJeśli chcesz dodać bagaż: wybierz 2
-Jeśli chcesz rozliczyć pralnię: wybierz 3\nJeśli chcesz rozliczyć postój samochodu: wybierz 4\n""")
+Jeśli chcesz rozliczyć pralnię: wybierz 3\nJeśli chcesz rozliczyć postój samochodu: wybierz 4
+Jeśli chcesz dodać lub usunąć pokój: wybierz 0\n""")
 washing = 7
 date = date.today()
 
@@ -100,8 +123,10 @@ if decision == "1":
     birth = input("Podaj datę urodzenia: ")
     company = input("Jaka firma? ")
     roomdata()
-    whichroom = int(input("Który pokój wybrać? Jeśli chcesz stworzyć nowy pokój wyślij: 0 "))
-    roomchecking()
+    whichroom = int(input("Który pokój wybrać? \nJeśli chcesz stworzyć pokój: wybierz 0 \n"))
+    if whichroom == 0:
+        roomchecking()
+        whichroom2 = int(input("Iluosobowy pokój chcesz stworzyć i wynająć? "))         #whichroom2 here too
     room = input("Numer pokoju: ")
     time = int(input("Ile dni?"))
     amount()
@@ -128,6 +153,14 @@ elif decision == "4":
     with open('samochod.txt', 'a') as f:
         for linia in car:
             f.write(linia + '\n')                                      #saving to samochod.txt
+elif decision == "0":                          # if room is not in database - roomcreator
+    createordelete = input("Jeśli chcesz stworzyć pokój, wyślij: s\nJeśli chcesz usunąć pokój wyślij: u")
+    if createordelete == 's':
+        roomcreator()
+    elif createordelete == 'u':
+        roomdata()
+        roomtodelete = int(input("Iluosobowy pokój chcesz usunąć?"))
+        roomdelete()
 else:
     print("Błąd")
 
