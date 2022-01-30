@@ -27,9 +27,8 @@ class Room_management:
         cur.execute("SELECT * FROM room")
         results = cur.fetchall()
         for row in results:
-            print("\nDostępne pokoje:")
-            print(row[0], "osobowy pokój")
-            print("Cena: ", row[1], "\n")
+            print("\nDostępne pokoje:\n%s-osobowy pokój.\nCena: %szł\n" % (row[0], row[1]))
+
 
     def roomcreator(self):
         con = sqlite3.connect('pokoje.db')
@@ -70,14 +69,14 @@ class Room_management:
                 creatordecision = input(
                     "Nie ma takiego pokoju. Chcesz go stworzyć? (t/n)")  # posibility to create a room
                 if creatordecision == 't':
-                    x.roomcreator()
-                    x.roomdata()
-                    x.roomchecking()
+                    r.roomcreator()
+                    r.roomdata()
+                    r.roomchecking()
                 else:
                     print("Błąd1")
         elif whichroom == 0:
-            x.roomcreator()
-            x.roomdata()
+            r.roomcreator()
+            r.roomdata()
             whichroom2 = int(input("Iluosobowy pokój chcesz wynająć? "))
             cur.execute(f"SELECT * from room WHERE beds='{whichroom2}'")
             if cur.fetchall():
@@ -93,39 +92,34 @@ class Room_management:
             cur.execute(f"SELECT price, beds FROM room WHERE beds = {whichroom}")
             results = cur.fetchall()
             for row in results:
-                print(int(row[0]) * time)
+                return (int(row[0]) * time)
         elif whichroom == 0:  # whichroom2 here too
             cur.execute(f"SELECT price, beds FROM room WHERE beds = {whichroom2}")
             results = cur.fetchall()
             for row in results:
-                print(int(row[0]) * time)
+                return (int(row[0]) * time)
 
 
 def main(args):                                                        #program screen
     if decision == "1":
-        print(c.name, "musi zapłacić", r.amount(), "złotych za meldunek.")
+        print("%s musi zapłacić %s złotych za meldunek" % (c.name, r.amount()))
     if decision == "2":
         if hmany == 1:
-            print(name, "zostawił", hmany, "bagaż, dnia:", date)
+            print("%s zostawił %s bagaż, dnia: %s" % (name, hmany, date))
         elif hmany > 1 and hmany < 5:
-            print(name, "zostawił", hmany, "bagaże", date)
+            print("%s zostawił %s bagaże, dnia: %s" % (name, hmany, date))
         else:
-            print(name, "zostawił", hmany, "bagaży", date)
+            print("%s zostawił %s bagaży, dnia %s" % (name, hmany, date))
     elif decision == "3":
         washingcost = hmanywashes * washing
         if hmanywashes == 1:
-            print(hmanywashes, "pranie kosztować będzie", washingcost, "zł.")
+            print("%s pranie kosztować będzie %szł" % (hmanywashes, washingcost))
         elif hmanywashes > 1 and hmanywashes < 5:
-            print(hmanywashes, "prania kosztować będą", washingcost, "zł.")
+            print("%s prania kosztować będą %szł." % (hmanywashes, washingcost))
         else:
-            print(hmanywashes, "prań kosztować będzie", washingcost, "zł.")
+            print("%s prań kosztować będzie %szł." % (hmanywashes, washingcost))
     elif decision == "4":
-        print(name, "zostawił auto o numerach rejestracyjnych: ", registrationnumb, ". Dnia: ", date)
-
-
-
-
-
+        print("%s zostawił auto o numerach rejestracyjnych: %s. Dnia: %s" % (name, registrationnumb, date))
 
 
 decision = input("""Jeśli chcesz kogoś zameldować: wybierz 1.\nJeśli chcesz dodać bagaż: wybierz 2
@@ -145,9 +139,10 @@ if decision == "1":
     room = input("Numer pokoju: ")
     time = int(input("Ile dni?"))
     checkout = str(date + datetime.timedelta(days=time))        #date of checking into + days from time
-    checkinto = ['Imię i nazwisko: ' + c.name, 'Numer paszportu: ' + c.passport,
-                'Data urodzenia: ' + c.birth, 'Firma: ' + c.company, 'Numer pokoju: ' + room,
-                'Data zameldowania: ' + str(date), 'Zostaje do: ' + checkout, 'Kwota: ' + str(r.amount) + 'zł', '\n']
+    checkinto = ['Imię i nazwisko: %s \nNumer paszportu: %s \nData urodzenia: %s \nFirma: %s \nNumer pokoju: %s' 
+                '\nData zameldowania: %s \nZostaje do: %s \nKwota: %szł\n' % (c.name, c.passport, c.birth, c.company,
+                                                                              room, str(date), checkout, str(r.amount))]
+
     with open('meldunki.txt', 'a') as f:
         for linia in checkinto:
             f.write(linia + '\n')
@@ -155,7 +150,7 @@ if decision == "1":
 elif decision == "2":
     name = input("Podaj imię i nazwisko: ")
     hmany = int(input("Ile bagaży? "))
-    luggage = ['Imię i nazwisko: ' + name, 'Ilość bagaży: ' + str(hmany), 'Kiedy zostawiono: ' + str(date), '\n']
+    luggage = ['Imię i nazwisko: %s\nIlość bagaży: %s\nKiedy zostawiono: %s\n' % (name, str(hmany), str(date))]
     with open('bagaze.txt', 'a') as f:
         for linia in luggage:
             f.write(linia + '\n')                                      #saving to bagaze.txt
@@ -164,7 +159,7 @@ elif decision == "3":
 elif decision == "4":
     registrationnumb = input("Podaj numer rejestracjny: ")
     name = input("Podaj imię i nazwisko: ")
-    car = ['Imię i nazwisko: ' + name, "Numer rejestracyjny: ", registrationnumb, 'Kiedy zostawiono: ' + str(date), '\n']
+    car = ['Imię i nazwisko: %s\nNumer rejestracyjny: %s\n Kiedy zostawiono: %s\n' % (name, registrationnumb, str(date))]
     with open('samochod.txt', 'a') as f:
         for linia in car:
             f.write(linia + '\n')                                      #saving to samochod.txt
