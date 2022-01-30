@@ -137,6 +137,8 @@ if decision == "1":
         nbeds = whichroom2
         r.roomchecking()
         print("Wybrany pokój: %s-osobowy" % whichroom2)
+    else:
+        r.roomchecking()
     room = input("Numer pokoju: ")
     time = int(input("Ile dni?"))
     checkout = str(date + datetime.timedelta(days=time))        #date of checking into + days from time
