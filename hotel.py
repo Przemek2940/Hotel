@@ -77,7 +77,6 @@ class Room_management:
         elif whichroom == 0:
             r.roomcreator()
             r.roomdata()
-            whichroom2 = int(input("Iluosobowy pokój chcesz wynająć? "))
             cur.execute(f"SELECT * from room WHERE beds='{whichroom2}'")
             if cur.fetchall():
                 return whichroom2
@@ -135,6 +134,7 @@ if decision == "1":
     r.roomdata()
     whichroom = int(input("Który pokój wybrać? \nJeśli chcesz stworzyć pokój: wybierz 0 \n"))
     if whichroom == 0:
+        whichroom2 = int(input("Iluosobowy pokój chcesz wynająć? "))
         r.roomchecking()
     room = input("Numer pokoju: ")
     time = int(input("Ile dni?"))
