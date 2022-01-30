@@ -26,8 +26,9 @@ class Room_management:
         cur = con.cursor()
         cur.execute("SELECT * FROM room")
         results = cur.fetchall()
+        print("Dostępne pokoje:\n")
         for row in results:
-            print("\nDostępne pokoje:\n%s-osobowy pokój.\nCena: %szł\n" % (row[0], row[1]))
+            print("%s-osobowy pokój.\nCena: %szł\n" % (row[0], row[1]))
 
 
     def roomcreator(self):
@@ -39,9 +40,6 @@ class Room_management:
                 beds INTEGER PRIMARY KEY ASC,
                 price varchar(250) DEFAULT ''
             )""")
-
-        nbeds = input("Iluosobowy pokój chcesz stworzyć? ")
-        nprice = input("Jaka będzie cena za osobę? ")
 
         cur.execute("""
         INSERT OR IGNORE INTO room (beds, price)
@@ -134,8 +132,11 @@ if decision == "1":
     r.roomdata()
     whichroom = int(input("Który pokój wybrać? \nJeśli chcesz stworzyć pokój: wybierz 0 \n"))
     if whichroom == 0:
-        whichroom2 = int(input("Iluosobowy pokój chcesz wynająć? "))
+        whichroom2 = int(input("Iluosobowy pokój chcesz stworzyć? "))
+        nprice = input("Jaka będzie cena za osobę? ")
+        nbeds = whichroom2
         r.roomchecking()
+        print("Wybrany pokój: %s-osobowy" % whichroom2)
     room = input("Numer pokoju: ")
     time = int(input("Ile dni?"))
     checkout = str(date + datetime.timedelta(days=time))        #date of checking into + days from time
@@ -164,9 +165,13 @@ elif decision == "4":
         for linia in car:
             f.write(linia + '\n')                                      #saving to samochod.txt
 elif decision == "0":                          # if room is not in database - roomcreator
-    createordelete = input("Jeśli chcesz stworzyć pokój, wyślij: s\nJeśli chcesz usunąć pokój wyślij: u")
+    createordelete = input("Jeśli chcesz stworzyć pokój, wyślij: s\nJeśli chcesz usunąć pokój wyślij: u\n")
     if createordelete == 's':
+        nbeds = input("Iluosobowy pokój chcesz stworzyć?")
+        nprice = input("Jaka będzie cena za osobę? ")
         r.roomcreator()
+        print("Nowy stan pokoi:")
+        r.roomdata()
     elif createordelete == 'u':
         r.roomdata()
         roomtodelete = int(input("Iluosobowy pokój chcesz usunąć?"))
