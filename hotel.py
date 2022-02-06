@@ -4,24 +4,13 @@
 from datetime import date
 import datetime
 import sqlite3
-
-class Client:
-    def __init__(self, name = '', passport = '', birth = '', company = ''):
-        self.name = name
-        self.passport = passport
-        self.birth = birth
-        self.company = company
-
-    def inputuserdata(self):
-        self.name = input("Podaj imię i nazwisko: ")
-        self.passport = input("Podaj numer paszportu: ")
-        self.birth = input("Podaj datę urodzenia: ")
-        self.company = input("Jaka firma? ")
+import client
+c = client.Client()
 
 
-
-class Room_management:
-    def roomdata(self):  # prints available rooms
+class RoomManagement:
+    @staticmethod
+    def roomdata():  # prints available rooms
         con = sqlite3.connect('pokoje.db')
         cur = con.cursor()
         cur.execute("SELECT * FROM room")
@@ -30,8 +19,8 @@ class Room_management:
         for row in results:
             print("%s-osobowy pokój.\nCena: %szł\n" % (row[0], row[1]))
 
-
-    def roomcreator(self):
+    @staticmethod
+    def roomcreator():
         con = sqlite3.connect('pokoje.db')
         con.row_factory = sqlite3.Row
         cur = con.cursor()
@@ -47,7 +36,8 @@ class Room_management:
         """, (nbeds, nprice))
         con.commit()
 
-    def roomdelete(self):
+    @staticmethod
+    def roomdelete():
         con = sqlite3.connect('pokoje.db')
         con.row_factory = sqlite3.Row
         cur = con.cursor()
@@ -55,7 +45,8 @@ class Room_management:
         con.commit()
         exit()
 
-    def roomchecking(self):  # searching for room in database
+    @staticmethod
+    def roomchecking():  # searching for room in database
         con = sqlite3.connect('pokoje.db')
         con.row_factory = sqlite3.Row
         cur = con.cursor()
@@ -81,7 +72,8 @@ class Room_management:
             else:
                 print("Błąd2")
 
-    def amount(self):
+    @staticmethod
+    def amount():
         con = sqlite3.connect('pokoje.db')
         con.row_factory = sqlite3.Row
         cur = con.cursor()
@@ -89,21 +81,21 @@ class Room_management:
             cur.execute(f"SELECT price, beds FROM room WHERE beds = {whichroom}")
             results = cur.fetchall()
             for row in results:
-                return (int(row[0]) * time)
+                return int(row[0]) * time
         elif whichroom == 0:  # whichroom2 here too
             cur.execute(f"SELECT price, beds FROM room WHERE beds = {whichroom2}")
             results = cur.fetchall()
             for row in results:
-                return (int(row[0]) * time)
+                return int(row[0]) * time
 
 
-def main(args):                                                        #program screen
+def main(args):                                                        # program screen
     if decision == "1":
         print("%s musi zapłacić %s złotych za meldunek" % (c.name, r.amount()))
     if decision == "2":
         if hmany == 1:
             print("%s zostawił %s bagaż, dnia: %s" % (name, hmany, date))
-        elif hmany > 1 and hmany < 5:
+        elif 5 > hmany > 1:
             print("%s zostawił %s bagaże, dnia: %s" % (name, hmany, date))
         else:
             print("%s zostawił %s bagaży, dnia %s" % (name, hmany, date))
@@ -111,7 +103,7 @@ def main(args):                                                        #program 
         washingcost = hmanywashes * washing
         if hmanywashes == 1:
             print("%s pranie kosztować będzie %szł" % (hmanywashes, washingcost))
-        elif hmanywashes > 1 and hmanywashes < 5:
+        elif 5 > hmanywashes > 1:
             print("%s prania kosztować będą %szł." % (hmanywashes, washingcost))
         else:
             print("%s prań kosztować będzie %szł." % (hmanywashes, washingcost))
@@ -124,8 +116,7 @@ Jeśli chcesz rozliczyć pralnię: wybierz 3\nJeśli chcesz rozliczyć postój s
 Jeśli chcesz dodać lub usunąć pokój: wybierz 0\n""")
 washing = 7
 date = date.today()
-r = Room_management()
-c = Client()
+r = RoomManagement()
 
 if decision == "1":
     c.inputuserdata()
@@ -141,10 +132,10 @@ if decision == "1":
         r.roomchecking()
     room = input("Numer pokoju: ")
     time = int(input("Ile dni?"))
-    checkout = str(date + datetime.timedelta(days=time))        #date of checking into + days from time
+    checkout = str(date + datetime.timedelta(days=time))        # date of checking into + days from time
     checkinto = ['Imię i nazwisko: %s \nNumer paszportu: %s \nData urodzenia: %s \nFirma: %s \nNumer pokoju: %s' 
-                '\nData zameldowania: %s \nZostaje do: %s \nKwota: %szł\n' % (c.name, c.passport, c.birth, c.company,
-                                                                              room, str(date), checkout, str(r.amount()))]
+                 '\nData zameldowania: %s \nZostaje do: %s \nKwota: %szł\n' % (c.name, c.passport, c.birth, c.company,
+                                                                            room, str(date), checkout, str(r.amount()))]
 
     with open('meldunki.txt', 'a') as f:
         for linia in checkinto:
@@ -156,16 +147,16 @@ elif decision == "2":
     luggage = ['Imię i nazwisko: %s\nIlość bagaży: %s\nKiedy zostawiono: %s\n' % (name, str(hmany), str(date))]
     with open('bagaze.txt', 'a') as f:
         for linia in luggage:
-            f.write(linia + '\n')                                      #saving to bagaze.txt
+            f.write(linia + '\n')                                      # saving to bagaze.txt
 elif decision == "3":
-    hmanywashes = int(input("Ile prań? "))                                  #just calculator
+    hmanywashes = int(input("Ile prań? "))                                  # just calculator
 elif decision == "4":
     registrationnumb = input("Podaj numer rejestracjny: ")
     name = input("Podaj imię i nazwisko: ")
-    car = ['Imię i nazwisko: %s\nNumer rejestracyjny: %s\n Kiedy zostawiono: %s\n' % (name, registrationnumb, str(date))]
+    car = ['Imię i nazwisko: %s\nNumer rejestracyjny: %s\n Zostawiono dnia: %s\n' % (name, registrationnumb, str(date))]
     with open('samochod.txt', 'a') as f:
         for linia in car:
-            f.write(linia + '\n')                                      #saving to samochod.txt
+            f.write(linia + '\n')                                      # saving to samochod.txt
 elif decision == "0":                          # if room is not in database - roomcreator
     createordelete = input("Jeśli chcesz stworzyć pokój, wyślij: s\nJeśli chcesz usunąć pokój wyślij: u\n")
     if createordelete == 's':
