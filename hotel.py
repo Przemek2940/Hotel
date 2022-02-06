@@ -144,7 +144,7 @@ if decision == "1":
     checkout = str(date + datetime.timedelta(days=time))        #date of checking into + days from time
     checkinto = ['Imię i nazwisko: %s \nNumer paszportu: %s \nData urodzenia: %s \nFirma: %s \nNumer pokoju: %s' 
                 '\nData zameldowania: %s \nZostaje do: %s \nKwota: %szł\n' % (c.name, c.passport, c.birth, c.company,
-                                                                              room, str(date), checkout, str(r.amount))]
+                                                                              room, str(date), checkout, str(r.amount()))]
 
     with open('meldunki.txt', 'a') as f:
         for linia in checkinto:
