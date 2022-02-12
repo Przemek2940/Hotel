@@ -1,10 +1,10 @@
 #! /home/przemek2940/PycharmProjects/venv00/bin python3
 # -*- coding: utf-8 -*-
-
-from datetime import date
+from datetime import *
 import datetime
 import sqlite3
 import client
+
 c = client.Client()
 
 
@@ -116,6 +116,7 @@ Jeśli chcesz rozliczyć pralnię: wybierz 3\nJeśli chcesz rozliczyć postój s
 Jeśli chcesz dodać lub usunąć pokój: wybierz 0\n""")
 washing = 7
 date = date.today()
+timehr = datetime.datetime.now()
 r = RoomManagement()
 
 if decision == "1":
@@ -150,6 +151,11 @@ elif decision == "2":
             f.write(linia + '\n')                                      # saving to bagaze.txt
 elif decision == "3":
     hmanywashes = int(input("Ile prań? "))                                  # just calculator
+    roomnumber = input("Numer pokoju: ")
+    washes = ['Data i godzina prania: %s:%s, %s, Pokój: %s' % (timehr.hour, timehr.minute, date, roomnumber)]
+    with open('pranie.txt', 'a') as f:
+        for linia in washes:
+            f.write(linia + '\n')
 elif decision == "4":
     registrationnumb = input("Podaj numer rejestracjny: ")
     name = input("Podaj imię i nazwisko: ")
