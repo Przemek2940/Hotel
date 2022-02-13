@@ -4,8 +4,9 @@ from datetime import *
 import datetime
 import sqlite3
 import client
-
+import luggage
 c = client.Client()
+l = luggage.Luggage()
 
 
 class RoomManagement:
@@ -93,12 +94,12 @@ def main(args):                                                        # program
     if decision == "1":
         print("%s musi zapłacić %s złotych za meldunek" % (c.name, r.amount()))
     if decision == "2":
-        if hmany == 1:
-            print("%s zostawił %s bagaż, dnia: %s" % (name, hmany, date))
-        elif 5 > hmany > 1:
-            print("%s zostawił %s bagaże, dnia: %s" % (name, hmany, date))
+        if l.hmany == 1:
+            print("%s zostawił %s bagaż, dnia: %s" % (l.name, l.hmany, date))
+        elif 5 > l.hmany > 1:
+            print("%s zostawił %s bagaże, dnia: %s" % (l.name, l.hmany, date))
         else:
-            print("%s zostawił %s bagaży, dnia %s" % (name, hmany, date))
+            print("%s zostawił %s bagaży, dnia %s" % (l.name, l.hmany, date))
     elif decision == "3":
         washingcost = hmanywashes * washing
         if hmanywashes == 1:
@@ -143,30 +144,9 @@ if decision == "1":
             f.write(linia + '\n')
 
 elif decision == "2":
-    name = input("Podaj imię i nazwisko: ")
-    hmany = int(input("Ile bagaży? "))
-    luggage = ['Imię i nazwisko: %s\nIlość bagaży: %s\nKiedy zostawiono: %s\n' % (name, str(hmany), str(date))]
-    with open('bagaze.txt', 'a') as f:
-        for linia in luggage:
-            f.write(linia + '\n')                                      # saving to bagaze.txt
-
-
-    con = sqlite3.connect('bagaze.db')
-    con.row_factory = sqlite3.Row
-    cur = con.cursor()
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS luggage (
-            intdate varchar(250) PRIMARY KEY ASC,
-            cname varchar(250) DEFAULT '',
-            hmany varchar(250) DEFAULT ''
-        )""")
-
-    cur.execute("""
-    INSERT OR IGNORE INTO luggage (intdate, cname, hmany)
-    VALUES (?,?,?)
-    """, (date, name, hmany))
-    con.commit()
-
+    l.inputluggage()
+    l.txtsaving()
+    l.dbsaving()
 elif decision == "3":
     hmanywashes = int(input("Ile prań? "))                                  # just calculator
     roomnumber = input("Numer pokoju: ")
