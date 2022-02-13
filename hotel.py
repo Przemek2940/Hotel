@@ -149,6 +149,24 @@ elif decision == "2":
     with open('bagaze.txt', 'a') as f:
         for linia in luggage:
             f.write(linia + '\n')                                      # saving to bagaze.txt
+
+
+    con = sqlite3.connect('bagaze.db')
+    con.row_factory = sqlite3.Row
+    cur = con.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS luggage (
+            intdate varchar(250) PRIMARY KEY ASC,
+            cname varchar(250) DEFAULT '',
+            hmany varchar(250) DEFAULT ''
+        )""")
+
+    cur.execute("""
+    INSERT OR IGNORE INTO luggage (intdate, cname, hmany)
+    VALUES (?,?,?)
+    """, (date, name, hmany))
+    con.commit()
+
 elif decision == "3":
     hmanywashes = int(input("Ile prań? "))                                  # just calculator
     roomnumber = input("Numer pokoju: ")
