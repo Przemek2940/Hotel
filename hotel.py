@@ -158,7 +158,7 @@ elif decision == "3":
 elif decision == "4":
     registrationnumb = input("Podaj numer rejestracjny: ")
     name = input("Podaj imię i nazwisko: ")
-    car = ['Imię i nazwisko: %s\nNumer rejestracyjny: %s\n Zostawiono dnia: %s\n' % (name, registrationnumb, str(date))]
+    car = ['Imię i nazwisko: %s\nNumer rejestracyjny: %s\nZostawiono dnia: %s\n' % (name, registrationnumb, str(date))]
     with open('samochod.txt', 'a') as f:
         for linia in car:
             f.write(linia + '\n')                                      # saving to samochod.txt
