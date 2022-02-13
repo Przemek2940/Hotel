@@ -112,9 +112,8 @@ def main(args):                                                        # program
         print("%s zostawił auto o numerach rejestracyjnych: %s. Dnia: %s" % (name, registrationnumb, date))
 
 
-decision = input("""Jeśli chcesz kogoś zameldować: wybierz 1.\nJeśli chcesz dodać bagaż: wybierz 2
-Jeśli chcesz rozliczyć pralnię: wybierz 3\nJeśli chcesz rozliczyć postój samochodu: wybierz 4
-Jeśli chcesz dodać lub usunąć pokój: wybierz 0\n""")
+decision = input("""Meldowanie: wybierz 1.\nBagaże: wybierz 2\nPralnia: wybierz 3
+Postój samochodu: wybierz 4\nJeśli chcesz dodać lub usunąć pokój: wybierz 0\n""")
 washing = 7
 date = date.today()
 timehr = datetime.datetime.now()
@@ -144,11 +143,13 @@ if decision == "1":
             f.write(linia + '\n')
 
 elif decision == "2":
-    l.inputluggage()
-    l.txtsaving()
-    l.dbsaving()
+    whattodo = input("Dodanie bagażu: Wybierz 1\nOdebranie bagażu: Wybierz 2\n")
+    if whattodo == '1':                                         # luggage class teleport
+        l.inputluggage()
+        l.txtsaving()
+        l.dbsaving()
 elif decision == "3":
-    hmanywashes = int(input("Ile prań? "))                                  # just calculator
+    hmanywashes = int(input("Ile prań? "))
     roomnumber = input("Numer pokoju: ")
     washes = ['Data i godzina prania: %s:%s, %s, Pokój: %s' % (timehr.hour, timehr.minute, date, roomnumber)]
     with open('pranie.txt', 'a') as f:

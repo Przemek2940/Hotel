@@ -1,0 +1,4 @@
+Imię i nazwisko: Imię Nazwisko
+Ilość bagaży: 1
+Kiedy zostawiono: 2022-02-13
+

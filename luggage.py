@@ -28,7 +28,7 @@ class Luggage:
         cur = con.cursor()
         cur.execute("""
             CREATE TABLE IF NOT EXISTS luggage (
-                intdate varchar(250) PRIMARY KEY ASC,
+                intdate varchar(250) DEFAULT '',
                 cname varchar(250) DEFAULT '',
                 hmany varchar(250) DEFAULT ''
             )""")
