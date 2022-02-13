@@ -1,0 +1,18 @@
+Imię i nazwisko: Imię nazwisko 
+Numer paszportu: ABCD 
+Data urodzenia: 01.01.1901 
+Firma: BRAK 
+Numer pokoju: 13
+Data zameldowania: 2022-02-13 
+Zostaje do: 2022-03-05 
+Kwota: 700zł
+
+Imię i nazwisko: Imię Nazwisko 
+Numer paszportu: 12345 
+Data urodzenia: 10.10.2010 
+Firma: Nazwa 
+Numer pokoju: 303
+Data zameldowania: 2022-02-13 
+Zostaje do: 2022-02-15 
+Kwota: 120zł
+
