@@ -125,6 +125,7 @@ Postój samochodu: wybierz 4\nJeśli chcesz dodać lub usunąć pokój: wybierz 
     if decision == "1":
         c.inputuserdata()
         r.roomdata()
+        c.clientdb()
         whichroom = int(input("Który pokój wybrać? \nJeśli chcesz stworzyć pokój: wybierz 0 \n"))
         if whichroom == 0:
             whichroom2 = int(input("Iluosobowy pokój chcesz stworzyć? "))
@@ -141,7 +142,6 @@ Postój samochodu: wybierz 4\nJeśli chcesz dodać lub usunąć pokój: wybierz 
                      '\nData zameldowania: %s \nZostaje do: %s \nKwota: %szł\n' % (c.name, c.passport, c.birth,
                                                                                    c.company, room, str(date), checkout,
                                                                                    str(r.amount()))]
-
         with open('meldunki.txt', 'a') as f:
             for linia in checkinto:
                 f.write(linia + '\n')
