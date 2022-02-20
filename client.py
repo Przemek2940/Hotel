@@ -47,4 +47,3 @@ class Client:
         for row in results:
             print("Numer paszportu: %s, Imię i nazwisko: %s, Data urodzenia: %s, Firma: %s, Data zameldowania: %s" %
                   (row[0], row[1], row[2], row[3], row[4]))
-

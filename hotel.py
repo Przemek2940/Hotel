@@ -1,10 +1,8 @@
 #! /home/przemek2940/PycharmProjects/venv00/bin python3
 # -*- coding: utf-8 -*-
 from datetime import *
-import datetime
-import sqlite3
-import client
-import luggage
+import datetime, sqlite3, client, luggage
+
 c = client.Client()
 l = luggage.Luggage()
 
