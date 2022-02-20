@@ -120,7 +120,8 @@ r = RoomManagement()
 while True:
     print("\n" + "x" * 40 + "\n")
     decision = input("""Meldowanie: wybierz 1.\nBagaże: wybierz 2\nPralnia: wybierz 3
-Postój samochodu: wybierz 4\nJeśli chcesz dodać lub usunąć pokój: wybierz 0\nJeśli chcesz zakonczyć: wybierz x\n""")
+Postój samochodu: wybierz 4\nJeśli chcesz poszukać klienta w bazie: wybierz 5
+Jeśli chcesz dodać lub usunąć pokój: wybierz 0\nJeśli chcesz zakonczyć: wybierz x\n""")
 
     if decision == "1":
         c.inputuserdata()
@@ -167,6 +168,8 @@ Postój samochodu: wybierz 4\nJeśli chcesz dodać lub usunąć pokój: wybierz 
         with open('samochod.txt', 'a') as f:
             for linia in car:
                 f.write(linia + '\n')                                      # saving to samochod.txt
+    elif decision == "5":
+        c.clientsearching()
     elif decision == "0":                          # if room is not in database - roomcreator
         createordelete = input("Jeśli chcesz stworzyć pokój, wyślij: s\nJeśli chcesz usunąć pokój wyślij: u\n")
         if createordelete == 's':
