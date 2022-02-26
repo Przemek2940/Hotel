@@ -18,7 +18,7 @@ class Client:
         self.company = input("Jaka firma? ")
 
     def clientdb(self):
-        con = sqlite3.connect('klienci.db')
+        con = sqlite3.connect('hotel.db')
         con.row_factory = sqlite3.Row
         cur = con.cursor()
         cur.execute("""
@@ -39,7 +39,7 @@ class Client:
     @staticmethod
     def clientsearching():
         passportnumber = input("Podaj numer paszportu\n")
-        con = sqlite3.connect('klienci.db')
+        con = sqlite3.connect('hotel.db')
         con.row_factory = sqlite3.Row
         cur = con.cursor()
         cur.execute(f"SELECT * from clients WHERE passport='{passportnumber}'")

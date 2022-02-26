@@ -23,7 +23,7 @@ class Luggage:
                 f.write(linia + '\n')  # saving to bagaze.txt
 
     def dbsaving(self):
-        con = sqlite3.connect('bagaze.db')
+        con = sqlite3.connect('hotel.db')
         con.row_factory = sqlite3.Row
         cur = con.cursor()
         cur.execute("""

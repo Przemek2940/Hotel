@@ -10,7 +10,7 @@ l = luggage.Luggage()
 class RoomManagement:
     @staticmethod
     def roomdata():  # prints available rooms
-        con = sqlite3.connect('pokoje.db')
+        con = sqlite3.connect('hotel.db')
         cur = con.cursor()
         cur.execute("SELECT * FROM room")
         results = cur.fetchall()
@@ -20,7 +20,7 @@ class RoomManagement:
 
     @staticmethod
     def roomcreator():
-        con = sqlite3.connect('pokoje.db')
+        con = sqlite3.connect('hotel.db')
         con.row_factory = sqlite3.Row
         cur = con.cursor()
         cur.execute("""
@@ -37,7 +37,7 @@ class RoomManagement:
 
     @staticmethod
     def roomdelete():
-        con = sqlite3.connect('pokoje.db')
+        con = sqlite3.connect('hotel.db')
         con.row_factory = sqlite3.Row
         cur = con.cursor()
         cur.execute(f"DELETE from room WHERE beds = '{roomtodelete}'")
@@ -46,7 +46,7 @@ class RoomManagement:
 
     @staticmethod
     def roomchecking():  # searching for room in database
-        con = sqlite3.connect('pokoje.db')
+        con = sqlite3.connect('hotel.db')
         con.row_factory = sqlite3.Row
         cur = con.cursor()
         if whichroom > 0:
@@ -73,7 +73,7 @@ class RoomManagement:
 
     @staticmethod
     def amount():
-        con = sqlite3.connect('pokoje.db')
+        con = sqlite3.connect('hotel.db')
         con.row_factory = sqlite3.Row
         cur = con.cursor()
         if whichroom > 0:
